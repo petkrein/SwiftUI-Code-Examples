@@ -6,8 +6,6 @@ import SwiftUI
 
 struct EditView: View {
     
-    @State var isHovered = false
-    
     var body: some View {
         Text("Edit")
         .padding()
