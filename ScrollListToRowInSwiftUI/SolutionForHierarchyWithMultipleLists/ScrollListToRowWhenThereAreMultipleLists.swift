@@ -1,7 +1,7 @@
 // Code for scrolling List to a row when there is more than one List view in the SwiftUI hierarchy.
 // The idea is to have a class that can hold a reference to the table view in question (underlying UITableView of SwiftUI List view).
-// Add a TableViewFinder view inside the List, which will find its parent UITableView and set a refernce to it to the ScrollManager.
-// Then add a ScrollManagerView to the List which will listen to indexPathToSetVisible binding changes and scroll the the correct row.
+// Add a TableViewFinder view inside the List, which will find its parent UITableView and set a reference to it to the ScrollManager.
+// Then add a ScrollManagerView to the List which will listen to indexPathToSetVisible binding changes and scroll to the correct row.
 // This needs to be this way via a binding, we can't just call the `scrollTo(_ indexPath: IndexPath)` method directly, because it should be called when the table view was already updated with the new row.
 
 import SwiftUI
@@ -11,8 +11,6 @@ extension UIView {
     func superview<T>(of type: T.Type) -> T? {
         if let result = superview as? T {
             if let scrollView = result as? UIScrollView {
-                
-                // for renaming requests in the list, the textfield is inside a horizontal scrollview
                 if scrollView.frame.height < 40 {
                     return superview?.superview(of: type)
                 }
@@ -132,19 +130,19 @@ struct ContentView: View {
             
             HStack {
                 
-                // list that we don't need to programatically scroll
+                // list that we don't need to programmatically scroll
                 List {
                     Text("Some Item 1")
                     Text("Some Item 2")
                 }
                 
                 
-                // list that we need to programatically scroll
+                // list that we need to programmatically scroll
                 List {
                     ForEach(0..<self.items.count, id: \.self) { index in
                         Text(self.items[index])
                         .overlay(
-                            // we need this to grab the refernce to the table view that we want to programmatically scroll
+                            // we need this to grab the reference to the table view that we want to programmatically scroll
                             // the only way to add a child view to a List is to either add it to one of the rows or to insert an extra row
                             self.tableViewFinderOverlay
                                 .frame(width: 0, height: 0)
